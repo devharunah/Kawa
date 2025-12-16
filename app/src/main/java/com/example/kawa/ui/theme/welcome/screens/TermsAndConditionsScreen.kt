@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.kawa.ui.theme.KawaTheme
 import com.example.kawa.ui.theme.black
 import com.example.kawa.ui.theme.gray
-import com.example.kawa.ui.theme.light_colour
 
 @Composable
 fun TermsAndConditionsScreen(

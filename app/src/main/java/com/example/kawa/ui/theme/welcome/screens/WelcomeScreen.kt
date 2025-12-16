@@ -59,6 +59,7 @@ fun WelcomeScreen(
                     Text(
                         text =  "Get Started",
                         color = white,
+                        fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                         fontWeight = FontWeight.Normal
                     )
                 }
@@ -88,7 +89,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = "Learn, Trade, Coffee",
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = green,
                 textAlign = TextAlign.Center
