@@ -14,23 +14,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kawa.ui.theme.green
+import com.example.kawa.ui.theme.white
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.kawa.ui.theme.KawaTheme
+import com.example.kawa.ui.theme.black
+import com.example.kawa.ui.theme.gray
+import com.example.kawa.ui.theme.light_colour
 
 @Composable
 fun TermsAndConditionsScreen(
     onDecline: () -> Unit,
     onAgree: () -> Unit
 ) {
-    // Assuming your MaterialTheme.colorScheme.primary is the coffee/teal color.
-    // If not, use a specific color like Color(0xFF00695C) to match the image exactly.
-    val brandColor = MaterialTheme.colorScheme.primary
-    val backgroundColor = MaterialTheme.colorScheme.surface
+
+    val brandColor = green
+    val backgroundColor = white
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(brandColor) // The top header background color
-    ) {
-        // 1. Header Section
+            .background(brandColor)
+        ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -41,6 +47,7 @@ fun TermsAndConditionsScreen(
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
+
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -49,7 +56,6 @@ fun TermsAndConditionsScreen(
                 color = Color.White.copy(alpha = 0.9f)
             )
         }
-
         // 2. Content Card
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -71,7 +77,7 @@ fun TermsAndConditionsScreen(
                 Text(
                     text = "Last updated 30 Oct 2025",
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    color = gray
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -96,7 +102,7 @@ fun TermsAndConditionsScreen(
                             append("\nIf you do not agree to be bound by the terms of this agreement, you must stop using Our Application immediately. We may amend this agreement without notice at any time by posting the amended terms on the Kawa application.")
                         },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        color = black,
                         lineHeight = 20.sp
                     )
                 }
@@ -140,5 +146,12 @@ fun TermsAndConditionsScreen(
                 }
             }
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun TermaAndConditionScreen() {
+    KawaTheme {
+        TermsAndConditionsScreen(onDecline = {}, onAgree = {})
     }
 }

@@ -8,27 +8,44 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
+    // Use the lighter green for primary elements so they stand out against dark backgrounds
     primary = green,
-    secondary = black,
-//    text = white,
-    tertiary = green_light
+    onPrimary = green, // Text on primary buttons should be dark green for contrast
+
+    // Secondary can be the peach color for accents
+    secondary = light_colour,
+    onSecondary = green,
+    // Tertiary for subtle highlights
+    tertiary = green,
+    // Backgrounds
+    background = black,
+    onBackground = white,
+    surface = Color(0xFF121212), // Slightly lighter than pure black for cards
+    onSurface = white
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = light_colour,
-    secondary = green
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    // Use the strong brand green for primary action buttons
+    primary = green,
+    onPrimary = green_light, // Text on green buttons should be white
+
+    // Secondary accents using the light green
+    secondary = green_light,
+    onSecondary = green,
+
+    // Use your brand's specific "light_colour" (peach) for backgrounds
+    // to give the app a unique brand identity, rather than generic white.
+    background = white,
+    onBackground = black,
+
+    surface = white,
+    onSurface = black,
+
+    tertiary = black
 )
 
 @Composable
