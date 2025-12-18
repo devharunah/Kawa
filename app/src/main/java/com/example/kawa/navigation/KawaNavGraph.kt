@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.kawa.ui.theme.auth.LoginScreen
+import com.example.kawa.ui.theme.auth.SignUpScreen
 import com.example.kawa.ui.theme.welcome.screens.TermsAndConditionsScreen
 import com.example.kawa.ui.theme.welcome.screens.WelcomeScreen
 
@@ -16,7 +18,6 @@ fun KawaNavGraph(
         navController = navController,
         startDestination = Screen.Welcome.route
     ) {
-        // 1. Welcome / Onboarding Flow
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
                 onNavigateToTerms = {
@@ -29,19 +30,37 @@ fun KawaNavGraph(
         composable(route = Screen.Terms.route) {
             TermsAndConditionsScreen(
                 onDecline = {
-                    // Handle decline (e.g., close app or show toast)
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                    }
                 },
                 onAgree = {
-                    // Navigate to Home or Login
+                    //Navigate to signup screen
+                    navController.navigate(Screen.Signup.route) {
+                        popUpTo(Screen.Signup.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(route = Screen.Signup.route) {
+            SignUpScreen(
+                onSignUpClicked = {
                     navController.navigate(Screen.Home.route) {
-                        // Pop everything up to Welcome so back button doesn't return to terms
+                        // Clears the back stack so user can't go back to signup/terms
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                    }
+                }
+            )
+            LoginScreen(
+                onLoginClicked = {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Welcome.route) { inclusive = true }
                     }
                 }
             )
         }
 
-        // 3. Home (Placeholder)
+
         composable(route = Screen.Home.route) {
             // Your HomeScreen content here
         }

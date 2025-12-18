@@ -3,5 +3,7 @@ package com.example.kawa.navigation
 sealed class Screen(val route: String) {
     object Welcome : Screen("welcome_screen")
     object Terms : Screen("terms_screen")
-    object Home : Screen("home_screen") // Placeholder for where you go after Agree
+    object Home : Screen("home_screen")
+    object Signup : Screen(route = "signup_screen")
+    object Login : Screen(route = "login_screen")
 }
