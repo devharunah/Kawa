@@ -4,12 +4,14 @@ package com.example.kawa.ui.theme.auth
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +22,7 @@ import com.example.kawa.ui.theme.auth.components.KawaTextField
 
 @Composable
 fun LoginScreen(
+    onNavigateToSignup: () -> Unit,
     onLoginClicked: () -> Unit
 ) {
     var password by remember { mutableStateOf("") }
@@ -29,7 +32,6 @@ fun LoginScreen(
             .fillMaxSize()
             .background(green) // Brand Background
     ) {
-        // 1. Header Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,17 +104,47 @@ fun LoginScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Don't have an account? ",
+                        fontFamily = PoppinsFamily,
+                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = gray
+                    )
+                    Text(
+                        text = "Sign Up",
+                        fontFamily = PoppinsFamily,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = green,
+
+                        modifier = Modifier
+                            .clickable {
+                                onNavigateToSignup()
+                            }
+                            .padding(start = 4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+
             }
         }
     }
 }
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
     KawaTheme {
-        LoginScreen(onLoginClicked = {})
+        LoginScreen(
+            onLoginClicked = {},
+            onNavigateToSignup = {}
+        )
     }
 }

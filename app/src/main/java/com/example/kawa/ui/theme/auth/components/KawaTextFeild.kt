@@ -1,22 +1,24 @@
 package com.example.kawa.ui.theme.auth.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.kawa.ui.theme.InterFontFamily
-import com.example.kawa.ui.theme.black
-import com.example.kawa.ui.theme.gray
-import com.example.kawa.ui.theme.green
-import com.example.kawa.ui.theme.white
+import com.example.kawa.ui.theme.*
 
 @Composable
 fun KawaTextField(
@@ -24,34 +26,72 @@ fun KawaTextField(
     onValueChange: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false,
+    errorMessage: String? = null,
+    isPasswordField: Boolean = false // 1. New parameter to identify password fields
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        placeholder = {
-            Text(
-                text = placeholder,
-                color = gray,
-                fontFamily = InterFontFamily
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = gray,
+                    fontFamily = InterFontFamily
+                )
+            },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                fontFamily = InterFontFamily,
+                color = black
+            ),
+            singleLine = true,
+            isError = isError,
+            keyboardOptions = keyboardOptions,
+            visualTransformation = if (isPasswordField && !isPasswordVisible) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
+            },
+
+
+            trailingIcon = if (isPasswordField) {
+                {
+                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                        Icon(
+                            imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = if (isPasswordVisible) "Hide password" else "Show password",
+                            tint = black
+                        )
+                    }
+                }
+            } else null,
+
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = green,
+                unfocusedBorderColor = gray,
+                errorBorderColor = Color.Red,
+                cursorColor = green,
+                focusedContainerColor = white,
+                unfocusedContainerColor = white,
+                errorContainerColor = white
             )
-        },
-        textStyle = MaterialTheme.typography.bodyLarge.copy(
-            fontFamily = InterFontFamily,
-            color = black
-        ),
-        singleLine = true,
-        keyboardOptions = keyboardOptions,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = green, // Active state
-            unfocusedBorderColor = gray, // Inactive state
-            cursorColor = green,
-            focusedContainerColor = white,
-            unfocusedContainerColor = white
         )
-    )
+        if (isError && errorMessage != null) {
+            Text(
+                text = errorMessage,
+                color = Color.Red,
+                style = MaterialTheme.typography.labelSmall,
+                fontFamily = InterFontFamily,
+                modifier = Modifier.padding(start = 4.dp, top = 2.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -59,10 +99,9 @@ fun InputLabel(text: String) {
     Text(
         text = text,
         fontFamily = InterFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         color = black,
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(bottom = 8.dp)
     )
 }
-

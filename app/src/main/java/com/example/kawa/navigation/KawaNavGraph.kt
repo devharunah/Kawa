@@ -46,20 +46,23 @@ fun KawaNavGraph(
             SignUpScreen(
                 onSignUpClicked = {
                     navController.navigate(Screen.Home.route) {
-                        // Clears the back stack so user can't go back to signup/terms
-                        popUpTo(Screen.Welcome.route) { inclusive = true }
                     }
                 }
             )
+
+        }
+        composable(route = Screen.Login.route) {
             LoginScreen(
                 onLoginClicked = {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Welcome.route) { inclusive = true }
                     }
+                },
+                onNavigateToSignup = {
+                    navController.navigate(Screen.Signup.route)
                 }
             )
         }
-
 
         composable(route = Screen.Home.route) {
             // Your HomeScreen content here

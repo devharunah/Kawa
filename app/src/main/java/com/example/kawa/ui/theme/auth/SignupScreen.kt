@@ -24,20 +24,20 @@ fun SignUpScreen(
     var firstName by remember { mutableStateOf("") }
     var secondName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(green) // Brand Background
+            .background(green)
     ) {
-        // 1. Header Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 48.dp, bottom = 24.dp, start = 24.dp, end = 24.dp)
         ) {
             Text(
-                text = "Create Account",
+                text = "Join Kawa",
                 style = MaterialTheme.typography.headlineLarge,
                 fontFamily = PoppinsFamily, // Using your custom font
                 fontWeight = FontWeight.Bold,
@@ -94,8 +94,12 @@ fun SignUpScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // --- Phone Number with Country Code ---
-
+                InputLabel(text = "Password")
+                KawaTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    placeholder = "***"
+                )
 
                 Spacer(modifier = Modifier.weight(1f)) // Push button to bottom if space allows
                 Spacer(modifier = Modifier.height(32.dp))
