@@ -1,6 +1,8 @@
 package com.example.kawa.ui.theme.auth
 
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.background
@@ -13,12 +15,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kawa.ui.theme.*
 import com.example.kawa.ui.theme.auth.components.InputLabel
 import com.example.kawa.ui.theme.auth.components.KawaTextField
+import com.example.kawa.R
 
 @Composable
 fun LoginScreen(
@@ -38,7 +42,7 @@ fun LoginScreen(
                 .padding(top = 48.dp, bottom = 24.dp, start = 24.dp, end = 24.dp)
         ) {
             Text(
-                text = "Create Account",
+                text = "Welcome Back",
                 style = MaterialTheme.typography.headlineLarge,
                 fontFamily = PoppinsFamily, // Using your custom font
                 fontWeight = FontWeight.Bold,
@@ -46,7 +50,7 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Sign up to start trading coffee securely.",
+                text = "Login to start trading coffee securely.",
                 style = MaterialTheme.typography.bodyMedium,
                 fontFamily = InterFontFamily,
                 color = white.copy(alpha = 0.9f)
@@ -106,11 +110,53 @@ fun LoginScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Or",
+                        fontFamily = PoppinsFamily,
+                        fontWeight = FontWeight.Medium,
+                        color = black, // Use black or a dark gray for text
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                OutlinedButton(
+                    onClick = { /* TODO: Handle Google Sign In */ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(28.dp),
+                    border = BorderStroke(1.dp, gray) // Add a border
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.google_icon), // Your logo file
+                            contentDescription = "Google Logo",
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = "Sign in with Google",
+                            fontFamily = PoppinsFamily,
+                            fontWeight = FontWeight.Medium,
+                            color = black, // Use black or a dark gray for text
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(12.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
-                ) {
+                )
+
+                {
                     Text(
                         text = "Don't have an account? ",
                         fontFamily = PoppinsFamily,
