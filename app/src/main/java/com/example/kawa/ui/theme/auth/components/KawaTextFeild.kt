@@ -17,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kawa.ui.theme.*
+import com.example.kawa.ui.theme.auth.SignUpScreen
 
 @Composable
 fun KawaTextField(
@@ -29,7 +31,7 @@ fun KawaTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isError: Boolean = false,
     errorMessage: String? = null,
-    isPasswordField: Boolean = false // 1. New parameter to identify password fields
+    isPasswordField: Boolean = false
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
@@ -58,16 +60,14 @@ fun KawaTextField(
             } else {
                 VisualTransformation.None
             },
-
-
             trailingIcon = if (isPasswordField) {
                 {
                     IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                         Icon(
                             imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                             contentDescription = if (isPasswordVisible) "Hide password" else "Show password",
-                            tint = black
-                        )
+
+                            )
                     }
                 }
             } else null,
@@ -104,4 +104,16 @@ fun InputLabel(text: String) {
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(bottom = 8.dp)
     )
+}
+@Preview(showBackground = true)
+@Composable
+fun KawaTextFieldPreview() {
+    KawaTheme {
+        KawaTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = "Enter your email",
+            isError = false
+        )
+    }
 }

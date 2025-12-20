@@ -98,10 +98,11 @@ fun SignUpScreen(
                 KawaTextField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = "***"
+                    placeholder = "*********",
+                    isPasswordField = true
                 )
 
-                Spacer(modifier = Modifier.weight(1f)) // Push button to bottom if space allows
+                Spacer(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.height(32.dp))
 
 

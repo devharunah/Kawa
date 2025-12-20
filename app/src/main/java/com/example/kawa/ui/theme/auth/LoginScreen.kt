@@ -81,7 +81,9 @@ fun LoginScreen(
                 KawaTextField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = "******"
+                    placeholder = "******",
+                    isPasswordField = true
+
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(

@@ -36,7 +36,7 @@ fun KawaNavGraph(
                 },
                 onAgree = {
                     //Navigate to signup screen
-                    navController.navigate(Screen.Signup.route) {
+                    navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Signup.route) { inclusive = true }
                     }
                 }
