@@ -1,4 +1,4 @@
-package com.example.kawa.ui.theme.auth.components
+package com.example.kawa.auth.components
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.kawa.ui.theme.*
-import com.example.kawa.ui.theme.auth.CountryCode
+import com.example.kawa.auth.CountryCode
 
 @Composable
 fun PhoneNumberInput(

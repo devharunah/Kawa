@@ -1,5 +1,6 @@
-package com.example.kawa.ui.theme.auth
+package com.example.kawa.auth
 
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.background
@@ -10,15 +11,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.kawa.auth.classes.AuthManager
 import com.example.kawa.ui.theme.*
-import com.example.kawa.ui.theme.auth.components.InputLabel
-import com.example.kawa.ui.theme.auth.components.KawaTextField
+import com.example.kawa.auth.components.InputLabel
+import com.example.kawa.auth.components.KawaTextField
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
+    authManager: AuthManager = remember { AuthManager() },
     onSignUpClicked: () -> Unit
 ) {
     var firstName by remember { mutableStateOf("") }
@@ -26,6 +31,9 @@ fun SignUpScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    var isLoading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +73,6 @@ fun SignUpScreen(
                     .verticalScroll(rememberScrollState())
             ) {
 
-                // --- First Name ---
                 InputLabel(text = "First Name")
                 KawaTextField(
                     value = firstName,
@@ -75,7 +82,6 @@ fun SignUpScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // --- Second Name ---
                 InputLabel(text = "Second Name")
                 KawaTextField(
                     value = secondName,
@@ -105,26 +111,50 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.height(32.dp))
 
-
-                Button(
-                    onClick = onSignUpClicked,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = green, // Brand Green
-                        contentColor = white
-                    )
-                ) {
-                    Text(
-                        text = "Sign Up",
-                        fontFamily = PoppinsFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                if (isLoading){
+                    CircularProgressIndicator()
                 }
-
+                else{
+                    Button(
+                        onClick = {
+                            val cleanEmail = email.trim()
+                            val cleanPassword = password.trim()
+                            if (cleanEmail.isNotBlank() && cleanPassword.isNotBlank()) {
+                                isLoading = true
+                                scope.launch {
+                                    val result = authManager.signUp(email, password)
+                                    isLoading = false
+                                    result.onSuccess {
+                                        onSignUpClicked()
+                                    }.onFailure { error ->
+                                        Toast.makeText(
+                                            context,
+                                            "Sign up failed: ${error.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(28.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = green, // Brand Green
+                            contentColor = white
+                        )
+                    ) {
+                        Text(
+                            text = "Sign Up",
+                            fontFamily = PoppinsFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }

@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.kawa.ui.theme.auth.LoginScreen
-import com.example.kawa.ui.theme.auth.SignUpScreen
+import com.example.kawa.auth.LoginScreen
+import com.example.kawa.auth.SignUpScreen
 import com.example.kawa.ui.theme.welcome.screens.TermsAndConditionsScreen
 import com.example.kawa.ui.theme.welcome.screens.WelcomeScreen
 
@@ -16,7 +16,7 @@ fun KawaNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Welcome.route
+        startDestination = Screen.Login.route
     ) {
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
@@ -25,7 +25,6 @@ fun KawaNavGraph(
                 }
             )
         }
-
         // 2. Terms and Conditions
         composable(route = Screen.Terms.route) {
             TermsAndConditionsScreen(
@@ -49,7 +48,6 @@ fun KawaNavGraph(
                     }
                 }
             )
-
         }
         composable(route = Screen.Login.route) {
             LoginScreen(

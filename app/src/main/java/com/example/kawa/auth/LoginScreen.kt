@@ -1,6 +1,7 @@
-package com.example.kawa.ui.theme.auth
+package com.example.kawa.auth
 
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.getValue
@@ -15,22 +16,29 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kawa.ui.theme.*
-import com.example.kawa.ui.theme.auth.components.InputLabel
-import com.example.kawa.ui.theme.auth.components.KawaTextField
+import com.example.kawa.auth.components.InputLabel
+import com.example.kawa.auth.components.KawaTextField
 import com.example.kawa.R
+import com.example.kawa.auth.classes.AuthManager
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
+    authManager: AuthManager = remember { AuthManager() },
     onNavigateToSignup: () -> Unit,
     onLoginClicked: () -> Unit
 ) {
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,16 +78,14 @@ fun LoginScreen(
                     .verticalScroll(rememberScrollState())
             ) {
 
-
                 Spacer(modifier = Modifier.height(16.dp))
 
                 InputLabel(text = "Email")
                 KawaTextField(
-                    value = email,
+                    value = email.trim(),
                     onValueChange = { email = it },
                     placeholder = "example@gmail.com"
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
                 InputLabel(text = "Password")
                 KawaTextField(
@@ -87,28 +93,50 @@ fun LoginScreen(
                     onValueChange = { password = it },
                     placeholder = "******",
                     isPasswordField = true
-
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                Button(
-                    onClick = onLoginClicked,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = green, // Brand Green
-                        contentColor = white
-                    )
-                ) {
-                    Text(
-                        text = "Login",
-                        fontFamily = PoppinsFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                if (isLoading){
+                    CircularProgressIndicator()
+                } else{
+                    Button(
+                        onClick = {
+                            val cleanPassword = password.trim()
+                            if (email.isNotBlank() && cleanPassword.isNotBlank()) {
+                                isLoading = true
+                                scope.launch {
+                                    val result = authManager.login(email, password)
+                                    isLoading = false
+                                    result.onSuccess {
+                                        onLoginClicked()
+                                    }.onFailure { error ->
+                                        Toast.makeText(
+                                            context,
+                                            "Login failed: ${error.message}",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(28.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = green, // Brand Green
+                            contentColor = white
+                        )
+                    ) {
+                        Text(
+                            text = "Login",
+                            fontFamily = PoppinsFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
                 Row (
                     modifier = Modifier.fillMaxWidth(),
@@ -191,7 +219,9 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     KawaTheme {
         LoginScreen(
-            onLoginClicked = {},
+            onLoginClicked = {
+
+            },
             onNavigateToSignup = {}
         )
     }

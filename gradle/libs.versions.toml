@@ -1,5 +1,5 @@
 [versions]
-
+firebaseBom = "34.7.0"
 agp = "8.13.1"
 navigation = "2.9.6"
 icons = "1.7.8"
@@ -13,6 +13,9 @@ activityCompose = "1.12.0"
 composeBom = "2024.09.00"
 
 [libraries]
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-bom = {module="com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
 material-icons = {module="androidx.compose.material:material-icons-extended", version.ref = "icons"}
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
