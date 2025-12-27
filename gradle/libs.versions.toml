@@ -1,5 +1,6 @@
 [versions]
 firebaseBom = "34.7.0"
+coil = "2.4.0"
 agp = "8.13.1"
 navigation = "2.9.6"
 icons = "1.7.8"
@@ -13,6 +14,7 @@ activityCompose = "1.12.0"
 composeBom = "2024.09.00"
 
 [libraries]
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-bom = {module="com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
