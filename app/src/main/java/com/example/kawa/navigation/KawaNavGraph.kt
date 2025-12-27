@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kawa.auth.LoginScreen
 import com.example.kawa.auth.SignUpScreen
+import com.example.kawa.auth.classes.AuthManager
+import com.example.kawa.ui.theme.profile.ProfileScreen
 import com.example.kawa.ui.theme.welcome.screens.TermsAndConditionsScreen
 import com.example.kawa.ui.theme.welcome.screens.WelcomeScreen
 
@@ -16,7 +18,7 @@ fun KawaNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.ProfileScreen.route
     ) {
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
@@ -61,7 +63,18 @@ fun KawaNavGraph(
                 }
             )
         }
-
+        composable(route = Screen.ProfileScreen.route) {
+            ProfileScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onLogout = {
+                    // Handle firebase logout
+                    AuthManager().signOut()
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(0) // Clear backstack
+                    }
+                }
+            )
+        }
         composable(route = Screen.Home.route) {
             // Your HomeScreen content here
         }

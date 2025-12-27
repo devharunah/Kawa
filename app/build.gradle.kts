@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.accompanist.permissions)
+    implementation(libs.play.services.location)
     implementation(platform(libs.firebase.bom))
     implementation(libs.coil.compose)
     implementation(libs.firebase.auth)

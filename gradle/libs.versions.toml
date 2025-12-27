@@ -1,6 +1,8 @@
 [versions]
+location="21.3.0"
+permissions = "0.37.3"
 firebaseBom = "34.7.0"
-coil = "2.4.0"
+coil = "2.7.0"
 agp = "8.13.1"
 navigation = "2.9.6"
 icons = "1.7.8"
@@ -14,6 +16,8 @@ activityCompose = "1.12.0"
 composeBom = "2024.09.00"
 
 [libraries]
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "location"}
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "permissions"}
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
