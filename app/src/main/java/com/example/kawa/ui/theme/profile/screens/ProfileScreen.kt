@@ -1,15 +1,10 @@
-package com.example.kawa.ui.theme.profile
+package com.example.kawa.ui.theme.profile.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Geocoder
 import android.widget.Toast
-//import androidx.activity.compose.rememberLauncherForActivityResult
-//import androidx.activity.result.contract.ActivityResultContracts
-//import androidx.compose.animation.AnimatedVisibility
-//import androidx.compose.animation.fadeIn
-//import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,29 +30,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.kawa.auth.components.InputLabel
 import com.example.kawa.auth.components.KawaTextField
+import com.example.kawa.ui.theme.profile.components.ExperienceEditItem
 import com.example.kawa.ui.theme.*
+import com.example.kawa.ui.theme.profile.components.ExperienceReadOnlyItem
+import com.example.kawa.ui.theme.profile.components.SectionHeader
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
 import java.util.Locale
+import java.util.UUID
+import com.example.kawa.ui.theme.profile.components.ProfileInfoCard
+
 
 // Data class to hold Experience items
 data class ExperienceItem(
-    val id: String = java.util.UUID.randomUUID().toString(),
+    val id: String = UUID.randomUUID().toString(),
     var company: String = "",
     var role: String = "",
     var fromDate: String = "",
     var toDate: String = "",
     var skills: String = ""
 )
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun ProfileScreen(
@@ -79,8 +78,6 @@ fun ProfileScreen(
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-
     // Location Permission State
     val locationPermissionsState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -193,7 +190,6 @@ fun ProfileScreen(
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
-
                 // Info Cards
                 ProfileInfoCard(icon = Icons.Outlined.LocationOn, label = "Location", value = location)
                 if (company.isNotEmpty()) ProfileInfoCard(icon = Icons.Outlined.Business, label = "Company", value = company)
@@ -274,9 +270,7 @@ fun ProfileScreen(
                             Icon(Icons.Default.MyLocation, contentDescription = "Get Location", tint = green)
                         }
                     }
-
                     Spacer(modifier = Modifier.height(24.dp))
-
                     // Experience Editor Section
                     SectionHeader(title = "Experience History")
 
@@ -306,105 +300,6 @@ fun ProfileScreen(
         }
     }
 }
-
-// --- Helper Composables ---
-
-@Composable
-fun ProfileInfoCard(icon: ImageVector, label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 6.dp)
-            .background(white, RoundedCornerShape(12.dp))
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(icon, contentDescription = null, tint = green, modifier = Modifier.size(24.dp))
-        Spacer(modifier = Modifier.width(16.dp))
-        Column {
-            Text(text = label, style = MaterialTheme.typography.labelSmall, color = gray, fontFamily = InterFontFamily)
-            Text(text = value, style = MaterialTheme.typography.bodyLarge, color = black, fontFamily = PoppinsFamily, fontWeight = FontWeight.Medium)
-        }
-    }
-}
-
-@Composable
-fun SectionHeader(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        fontFamily = PoppinsFamily,
-        fontWeight = FontWeight.Bold,
-        color = black,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 8.dp)
-    )
-}
-
-@Composable
-fun ExperienceReadOnlyItem(item: ExperienceItem) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = white),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(item.role.ifEmpty { "Role" }, fontWeight = FontWeight.Bold, fontFamily = PoppinsFamily, fontSize = 16.sp)
-            Text(item.company.ifEmpty { "Company" }, color = green, fontFamily = InterFontFamily, fontSize = 14.sp)
-            Text("${item.fromDate} - ${item.toDate}", color = gray, style = MaterialTheme.typography.bodySmall)
-            if (item.skills.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Skills: ${item.skills}", style = MaterialTheme.typography.bodySmall, color = black.copy(alpha = 0.7f))
-            }
-        }
-    }
-}
-
-@Composable
-fun ExperienceEditItem(item: ExperienceItem, onUpdate: (ExperienceItem) -> Unit, onRemove: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = white),
-        border = BorderStroke(1.dp, gray.copy(alpha = 0.2f))
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                Text("Job Details", style = MaterialTheme.typography.labelLarge, color = green)
-                Icon(
-                    Icons.Default.Delete,
-                    contentDescription = "Remove",
-                    tint = Color.Red.copy(alpha = 0.6f),
-                    modifier = Modifier.clickable { onRemove() }
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-
-            KawaTextField(value = item.role, onValueChange = { onUpdate(item.copy(role = it)) }, placeholder = "Role (e.g. Barista)")
-            Spacer(modifier = Modifier.height(8.dp))
-
-            KawaTextField(value = item.company, onValueChange = { onUpdate(item.copy(company = it)) }, placeholder = "Company Name")
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Box(modifier = Modifier.weight(1f)) {
-                    KawaTextField(value = item.fromDate, onValueChange = { onUpdate(item.copy(fromDate = it)) }, placeholder = "From (Year)")
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Box(modifier = Modifier.weight(1f)) {
-                    KawaTextField(value = item.toDate, onValueChange = { onUpdate(item.copy(toDate = it)) }, placeholder = "To (Year)")
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-
-            KawaTextField(value = item.skills, onValueChange = { onUpdate(item.copy(skills = it)) }, placeholder = "Skills / Tools used")
-        }
-    }
-}
-
 // --- Logic: Get Current Location ---
 @SuppressLint("MissingPermission")
 private fun getCurrentLocation(context: Context, onLocationFound: (String) -> Unit) {
@@ -436,5 +331,15 @@ private fun getCurrentLocation(context: Context, onLocationFound: (String) -> Un
         } else {
             Toast.makeText(context, "Location not found. Try opening Maps first.", Toast.LENGTH_LONG).show()
         }
+    }
+}
+@Preview
+@Composable
+fun ProfileScreenPreview() {
+    KawaTheme {
+        ProfileScreen(
+            onNavigateBack = {},
+            onLogout = {}
+        )
     }
 }

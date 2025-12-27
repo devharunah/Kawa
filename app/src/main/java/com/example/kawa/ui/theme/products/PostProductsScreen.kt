@@ -108,7 +108,6 @@ fun PostProductScreen(
                     color = black
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -308,7 +307,6 @@ fun PostProductScreen(
                         )
                     }
                 }
-                // Extra spacer for bottom padding
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
